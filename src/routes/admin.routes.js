@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const { generateToken } = require('../utils/jwt.util') 
 const Org = require('../models/org')
 
 router.post('/create', async (req, res) => {
@@ -32,7 +32,7 @@ router.post('/create', async (req, res) => {
     
         await organizationInstance.save()
     
-        const token = jwt.sign({ handle: organizationInstance.handle }, process.env.SECRET_KEY, { expiresIn: '2d'})
+        const token = generateToken({ handle: organizationInstance.handle })
     
         return res.status(200).json({
             message: "Organization Created Successfully!",
@@ -40,7 +40,8 @@ router.post('/create', async (req, res) => {
         })
 
     } catch (err) {
-
+        
+        console.log(err.message)
         return res.status(500).json({
             message: "Something Went Wrong!"
         })
@@ -76,7 +77,7 @@ router.post('/login', async (req, res) => {
         })
     }
 
-    const token = jwt.sign({ handle: findOrg.handle }, process.env.SECRET_KEY, { expiresIn: '2d'})
+    const token = generateToken({ handle: findOrg.handle })
 
     return res.status(200).json({
         message: "Logged In Successfully!",
