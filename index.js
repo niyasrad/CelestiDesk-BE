@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const combineRoutes = require('./src/routes')
 
+const { verifyToken } = require('./src/utils/jwt.util')
+
 const app = express()
 
 app.use(cors())
@@ -15,6 +17,13 @@ combineRoutes(app)
 app.get('/', (req, res) => {
     return res.status(200).json({
         message: "Server up and running!"
+    })
+})
+
+app.get('/checkauth', verifyToken, (req, res) => {
+    return res.status(200).json({
+        message: "You are authenticated!",
+        username: req.username
     })
 })
 
