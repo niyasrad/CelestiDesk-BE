@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const { generateToken } = require('../utils/jwt.util')
-const Employee = require('../models/employee')
+const Employee = require('../models/Employee')
 const Org = require('../models/org')
 
 router.post('/signup', async (req, res) => {
@@ -51,7 +51,7 @@ router.post('/signup', async (req, res) => {
     
         await employeeInstance.save()
     
-        const token = generateToken({ username: employeeInstance.username })
+        const token = generateToken({ username: employeeInstance.username, _id: employeeInstance._id })
     
         return res.status(200).json({
             message: "Employee Added Successfully!",
@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
         })
     }
 
-    const token = generateToken({ username: findEmployee.username })
+    const token = generateToken({ username: findEmployee.username, _id: findEmployee._id })
 
     return res.status(200).json({
         message: "Logged In Successfully!",
