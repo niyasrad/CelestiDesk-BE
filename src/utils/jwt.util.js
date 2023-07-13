@@ -14,7 +14,8 @@ const verifyToken = (req, res, next) => {
             if (err || !decoded) return res.status(403).json({
                 message: "Login has failed!"
             })
-            req.username = decoded.username; 
+            req.username = decoded.username
+            req._id = decoded._id
             next()
         })
 
