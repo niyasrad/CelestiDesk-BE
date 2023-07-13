@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { verifyToken } = require('../utils/jwt.util')
-const Employee = require('../models/Employee')
+const Employee = require('../models/employee')
 const Request = require('../models/request')
 
 router.post('/create', verifyToken, async (req, res) => {
