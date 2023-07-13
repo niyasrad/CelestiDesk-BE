@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const { generateToken } = require('../utils/jwt.util')
-const Employee = require('../models/Employee')
+const Employee = require('../models/employee')
 const Org = require('../models/org')
 
 router.post('/signup', async (req, res) => {
