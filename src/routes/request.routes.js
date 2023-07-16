@@ -11,6 +11,19 @@ router.post('/create', verifyToken, async (req, res) => {
         })
     }
 
+    const recentRequests = await Request.countDocuments({
+        origin: req._id,
+        time: {
+            $gte: Date.now() - (30 * 24 * 60 * 60 * 1000)
+        }
+    })
+
+    if (recentRequests >= 5) {
+        return res.status(400).json({
+            message: "You've used up 5 requests this month!"
+        })
+    }
+
     try {
 
         const employeeRequest = new Request({

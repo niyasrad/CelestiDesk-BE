@@ -18,6 +18,10 @@ const requestSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    time: {
+        type: Date,
+        default: Date.now
+    },
     status: {
         type: String,
         enum: ["IN_PROCESS", "IN_REVIEW", "ACCEPTED", "REJECTED"],
