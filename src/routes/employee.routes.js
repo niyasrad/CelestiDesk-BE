@@ -55,7 +55,8 @@ router.post('/signup', async (req, res) => {
     
         return res.status(200).json({
             message: "Employee Added Successfully!",
-            token: token
+            token: token,
+            role: req.body.type
         })
 
     } catch (err) {
@@ -99,7 +100,8 @@ router.post('/login', async (req, res) => {
 
     return res.status(200).json({
         message: "Logged In Successfully!",
-        token: token
+        token: token,
+        role: findEmployee.type
     })
 
 })
