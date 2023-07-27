@@ -5,6 +5,46 @@ const Employee = require('../models/employee')
 const Request = require('../models/request')
 const Transaction = require('../models/transaction')
 
+const accountSid = process.env.TWILIO_ACC_ID
+const authToken = process.env.TWILIO_AUTH_TOKEN
+
+
+router.post('/message', verifyToken, async (req, res) => {
+
+    const client = require('twilio')(accountSid, authToken);
+
+    if (!req.body.message || !req.body.password || req.body.password !== process.env.TWILIO_PASS) {
+        return res.status(400).json({
+            message: "Please check your credentials!"
+        })
+    }
+
+    try {
+        client.messages
+        .create({
+            body: req.body.message ? req.body.message: "Your request has been Accepted!",
+            from: `+${process.env.TWILIO_NUMBER}`,
+            to: `+${process.env.PERSONAL_NUMBER}`
+        })
+        .then(message => console.log(message.sid))
+
+        return res.status(200).json({
+            message: "Message Sent!"
+        })
+
+    } catch(err) {
+        console.log(err)
+        return res.status(500).json({
+            message: "Something went wrong!"
+        })
+    }
+    
+
+   
+})
+
+
+
 router.post('/decide', verifyToken, async (req, res) => {
     
     const user = await Employee.findById(req._id)
