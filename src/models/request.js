@@ -22,6 +22,18 @@ const requestSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    from: {
+        type: Date,
+        default: () => new Date()
+    },
+    to: {
+        type: Date,
+        default: () => {
+            const day = new Date()
+            day.setHours(23, 59, 59, 999)
+            return day
+        }
+    },
     status: {
         type: String,
         enum: ["IN_PROCESS", "IN_REVIEW", "ACCEPTED", "REJECTED"],
