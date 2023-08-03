@@ -122,7 +122,7 @@ router.get('/history', verifyToken, async (req, res) => {
 
     const transactions = await Transaction.find({
         responder: req._id
-    }).populate('request').populate('origin', '-password')
+    }).populate('request').populate('responder', '-password').populate('origin', '-password')
 
     return res.status(200).json({
         history: transactions
