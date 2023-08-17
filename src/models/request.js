@@ -34,6 +34,10 @@ const requestSchema = new mongoose.Schema({
             return day
         }
     },
+    emergency: {
+        type: Boolean,
+        default: false
+    },
     status: {
         type: String,
         enum: ["IN_PROCESS", "IN_REVIEW", "ACCEPTED", "REJECTED"],
