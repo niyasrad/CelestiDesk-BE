@@ -70,10 +70,11 @@ router.post('/decide', verifyToken, async (req, res) => {
         })
     }
 
-    if (request.status === 'IN_PROCESS' && user.type === 'TEAM_LEAD') {
+    if (request.status === 'IN_PROCESS' && (user.type === 'TEAM_LEAD' || user.type === 'EMERGENCY')) {
 
         if (req.body.decision === 'ACCEPTED') {
             request.status = 'IN_REVIEW'
+            request.time = Date.now()
         } else {
             request.status = 'REJECTED'
         }
@@ -81,6 +82,14 @@ router.post('/decide', verifyToken, async (req, res) => {
         
     } else if (request.status === 'IN_REVIEW' && user.type === 'MANAGER') {
 
+        if (Date.now() > request.time.getTime() + 20 * 60 * 1000 && !request.emergency) {
+            
+            return res.status(400).json({
+                message: "Request Timed Out!"
+            })
+
+        }
+        
         if (req.body.decision === 'ACCEPTED') {
             request.status = 'ACCEPTED'
         } else {

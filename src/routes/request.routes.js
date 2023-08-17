@@ -30,6 +30,7 @@ router.post('/create', verifyToken, async (req, res) => {
             origin: req._id,
             subject: req.body.subject,
             message: req.body.message,
+            emergency: req.body.emergency ? true: false,
             requestdate: new Date(req.body.date),
         })
     
@@ -68,9 +69,17 @@ router.get('/pending', verifyToken, async (req, res) => {
 
     let statusAccepted = user.type === 'MANAGER' ? 'IN_REVIEW' : 'IN_PROCESS'
 
-    let pendingRequests = await Request.find({
+    let query = {
         status: statusAccepted
-    })
+    }
+    
+    let emergencyNeeded = user.type === 'EMERGENCY'
+
+    if (emergencyNeeded) {
+        query.emergency = true;
+    }
+
+    let pendingRequests = await Request.find(query)
 
     return res.status(200).json({
         requests: pendingRequests

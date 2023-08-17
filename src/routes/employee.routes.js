@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
         })
     }
 
-    if (!['EMPLOYEE', 'TEAM_LEAD', 'MANAGER'].includes(req.body.type)) {
+    if (!['EMPLOYEE', 'TEAM_LEAD', 'MANAGER', 'EMERGENCY'].includes(req.body.type)) {
         return res.status(400).json({
             message: "Please check your type!"
         })

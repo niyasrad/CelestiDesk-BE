@@ -16,7 +16,7 @@ const employeeSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['EMPLOYEE', 'TEAM_LEAD', 'MANAGER'],
+        enum: ['EMPLOYEE', 'TEAM_LEAD', 'MANAGER', 'EMERGENCY'],
         required: true
     },
     password: {
