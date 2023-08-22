@@ -5,7 +5,7 @@ const Request = require('../models/request')
 
 router.post('/create', verifyToken, async (req, res) => {
 
-    if (!req.body.subject || !req.body.message || !req.body.date ) {
+    if (!req.body.subject || !req.body.message || !req.body.from || !req.body.to ) {
         return res.status(400).json({
             message: "Please check all the fields!"
         })
@@ -31,7 +31,8 @@ router.post('/create', verifyToken, async (req, res) => {
             subject: req.body.subject,
             message: req.body.message,
             emergency: req.body.emergency ? true: false,
-            requestdate: new Date(req.body.date),
+            from: new Date(req.body.from),
+            to: new Date(req.body.to),
         })
     
         await employeeRequest.save()
