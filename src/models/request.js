@@ -14,10 +14,6 @@ const requestSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    requestdate: {
-        type: Date,
-        required: true
-    },
     time: {
         type: Date,
         default: Date.now
