@@ -58,6 +58,19 @@ router.get('/pending', verifyToken, async (req, res) => {
 
     if (user.type === 'EMPLOYEE') {
 
+        let rejectionRequests = await Request.find({
+            origin: user._id,
+            status: 'IN_REVIEW',
+            time: {
+                $lt: Date.now() - (20 * 60 * 1000)
+            }
+        })
+
+        rejectionRequests.forEach(async (request) => {
+            request.status = 'REJECTED'
+            await request.save()
+        })
+
         let pendingRequests = await Request.find({
             origin: user._id
         })
@@ -71,13 +84,17 @@ router.get('/pending', verifyToken, async (req, res) => {
     let statusAccepted = user.type === 'MANAGER' ? 'IN_REVIEW' : 'IN_PROCESS'
 
     let query = {
-        status: statusAccepted
+        status: statusAccepted,
     }
     
     let emergencyNeeded = user.type === 'EMERGENCY'
 
     if (emergencyNeeded) {
         query.emergency = true;
+    } else if (user.type === 'MANAGER') {
+        query.time = {
+            $gte: Date.now() - (20 * 60 * 1000)
+        }
     }
 
     let pendingRequests = await Request.find(query)
