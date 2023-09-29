@@ -74,7 +74,7 @@ router.get('/pending', verifyToken, async (req, res) => {
 
         let pendingRequests = await Request.find({
             origin: user._id
-        })
+        }).populate('origin', 'name -_id')
 
         return res.status(200).json({
             requests: pendingRequests
@@ -98,7 +98,7 @@ router.get('/pending', verifyToken, async (req, res) => {
         }
     }
 
-    let pendingRequests = await Request.find(query)
+    let pendingRequests = await Request.find(query).populate('origin', 'name -_id')
 
     return res.status(200).json({
         requests: pendingRequests
